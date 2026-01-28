@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Poll;
+use App\Models\PollOptions;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,18 +12,19 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create("poll_options", function (Blueprint $table) {
+        Schema::create("votes", function (Blueprint $table) {
             $table->id();
-
             $table
                 ->foreignIdFor(Poll::class, "poll_id")
                 ->constrained()
                 ->nullOnDelete();
 
-            $table->string("name");
-            $table->string("description")->nullable();
-            $table->string("image");
-
+            $table
+                ->foreignIdFor(PollOptions::class, "poll_option_id")
+                ->constrained()
+                ->nullOnDelete();
+                
+                
             $table->timestamps();
         });
     }
@@ -32,6 +34,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists("poll_options");
+        Schema::dropIfExists("votes");
     }
 };
