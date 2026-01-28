@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Voting;
+use App\Models\Poll;
 use Illuminate\Http\Request;
 
-class VotingController extends Controller
+class PollController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class VotingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Voting $voting)
+    public function show(Poll $poll)
     {
         //
     }
@@ -42,7 +42,7 @@ class VotingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Voting $voting)
+    public function edit(Poll $poll)
     {
         //
     }
@@ -50,7 +50,7 @@ class VotingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Voting $voting)
+    public function update(Request $request, Poll $poll)
     {
         //
     }
@@ -58,7 +58,7 @@ class VotingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Voting $voting)
+    public function destroy(Poll $poll)
     {
         //
     }

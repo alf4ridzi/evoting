@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Voting extends Model
+class PollOptions extends Model
 {
     //
 }
