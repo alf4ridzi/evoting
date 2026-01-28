@@ -14,10 +14,7 @@ return new class extends Migration {
         Schema::create("poll_options", function (Blueprint $table) {
             $table->id();
 
-            $table
-                ->foreignIdFor(Poll::class, "poll_id")
-                ->constrained()
-                ->nullOnDelete();
+            $table->foreignIdFor(Poll::class, "poll_id")->constrained();
 
             $table->string("name");
             $table->string("description")->nullable();

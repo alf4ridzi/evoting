@@ -14,11 +14,7 @@ return new class extends Migration {
         Schema::create("polls", function (Blueprint $table) {
             $table->id();
 
-            $table
-                ->foreignIdFor(User::class, "created_by")
-                ->index()
-                ->constrained()
-                ->nullOnDelete();
+            $table->foreignIdFor(User::class, "created_by")->constrained();
 
             $table->string("poll_id")->unique()->index(); // for domain.com/v/pool_id -> rand char
 
@@ -28,8 +24,8 @@ return new class extends Migration {
                 ->default("active")
                 ->index();
 
-            $table->dateTime("starts_at")->index();
-            $table->dateTime("ends_at")->index();
+            $table->timestamp("starts_at")->index();
+            $table->timestamp("ends_at")->index();
 
             $table->timestamps();
         });

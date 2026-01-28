@@ -14,17 +14,13 @@ return new class extends Migration {
     {
         Schema::create("votes", function (Blueprint $table) {
             $table->id();
-            $table
-                ->foreignIdFor(Poll::class, "poll_id")
-                ->constrained()
-                ->nullOnDelete();
+            $table->foreignIdFor(Poll::class, "poll_id")->constrained();
 
             $table
                 ->foreignIdFor(PollOptions::class, "poll_option_id")
-                ->constrained()
-                ->nullOnDelete();
-                
-                
+                ->constrained();
+
+            $table->timestamp("voted_at");
             $table->timestamps();
         });
     }
