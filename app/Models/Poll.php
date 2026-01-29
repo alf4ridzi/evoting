@@ -7,4 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Poll extends Model
 {
     //
+    protected $fillable = [
+        "created_by",
+        "poll_id",
+        "name",
+        "status",
+        "starts_at",
+        "ends_at"
+    ];
 }

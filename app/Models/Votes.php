@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Votes extends Model
 {
     //
+    protected $fillable = [
+        "poll_id",
+        "poll_option_id",
+        "voted_at"
+    ];
 }

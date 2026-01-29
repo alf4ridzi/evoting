@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PollController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VotesController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,11 +16,11 @@ Route::get("/", function () {
     ]);
 });
 
-Route::get("/dashboard", function () {
-    return Inertia::render("Dashboard");
-})
-    ->middleware(["auth", "verified"])
-    ->name("dashboard");
+// Route::get("/dashboard", function () {
+//     return Inertia::render("Dashboard");
+// })
+//     ->middleware(["auth", "verified"])
+//     ->name("dashboard");
 
 Route::middleware("auth")->group(function () {
     Route::get("/profile", [ProfileController::class, "edit"])->name(
@@ -35,7 +36,23 @@ Route::middleware("auth")->group(function () {
 
 Route::prefix("/polls")->group(function () {
     Route::get("/", [PollController::class, "index"]);
-    Route::get("/create", [PollController::class, "create"]);
+    Route::post("/", [PollController::class, "store"])->name("polls.store");
+    Route::get("/create", [PollController::class, "create"])->middleware(
+        "auth",
+    );
 });
+
+Route::prefix("/voting")->group(function () {
+    Route::get("/{voting}", [VotesController::class, "index"]);
+    Route::get("/{voting}/result", [PollController::class, "result"]);
+});
+
+Route::middleware("auth")
+    ->prefix("/dashboard")
+    ->group(function () {
+        Route::get("/", [PollController::class, "dashboard"])->name(
+            "dashboard",
+        );
+    });
 
 require __DIR__ . "/auth.php";

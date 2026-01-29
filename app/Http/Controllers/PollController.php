@@ -3,8 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Poll;
+use App\Models\PollOptions;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Str;
 
 class PollController extends Controller
 {
@@ -32,6 +37,58 @@ class PollController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            "name" => ["required", "max:50"],
+            "starts_at" => ["required", "date"],
+            "ends_at" => ["required", "date"],
+            "options" => ["required", "array"],
+            "options.*.name" => ["required", "string"],
+            "options.*.description" => ["required", "string"],
+            "options.*.image" => ["required", "image", "mimes:jpg,png,jpeg,svg", "max:4092"]
+        ]);
+
+        $pollID = Str::random(8);
+
+        // poll data
+        $poll = [
+            "name" => $validated["name"],
+            "poll_id" => $pollID,
+            "created_by" => Auth::id(),
+            "starts_at" => $validated["starts_at"],
+            "ends_at" => $validated["ends_at"],
+        ];
+
+        DB::beginTransaction();
+
+        try {
+            // create Poll
+            $insertPoll = Poll::create($poll);
+            $pollID = $insertPoll->id;
+
+            foreach ($validated["options"] as $opt) {
+                $imageName = Str::random(12) . "." . $opt["image"]->extension();
+                $opt["image"]->move(public_path("images"), $imageName);
+
+                $option = [
+                    "poll_id" => $pollID,
+                    "name" => $opt["name"],
+                    "description" => $opt["description"],
+                    "image" => "images/" . $imageName,
+                ];
+
+                PollOptions::create($option);
+            }
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            return back()->with("error", "internal server error");
+        }
+        
+
+        return back()->with("success", "berhasil tambah data");
     }
 
     /**
@@ -64,5 +121,21 @@ class PollController extends Controller
     public function destroy(Poll $poll)
     {
         //
+    }
+
+    /**
+     * Dashboard
+     */
+    public function dashboard()
+    {
+        return Inertia::render("Polls/Dashboard");
+    }
+
+    /**
+     * result
+     */
+    public function result()
+    {
+        return Inertia::render("Polls/Result");
     }
 }
