@@ -73,7 +73,7 @@ class PollController extends Controller
                     "poll_id" => $pollID,
                     "name" => $opt["name"],
                     "description" => $opt["description"],
-                    "image" => "images/" . $imageName,
+                    "image" => $imageName,
                 ];
 
                 PollOptions::create($option);
@@ -83,7 +83,7 @@ class PollController extends Controller
 
         } catch (Exception $e) {
             DB::rollBack();
-            dd($e->getMessage());
+            // dd(vars: $e->getMessage());
             return back()->with("error", "internal server error");
         }
         
