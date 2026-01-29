@@ -88,7 +88,7 @@ class PollController extends Controller
         }
         
 
-        return back()->with("success", "berhasil tambah data");
+        return back()->with("success", "berhasil menambah voting");
     }
 
     /**

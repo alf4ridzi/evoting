@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Head, router, usePage } from "@inertiajs/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -23,21 +23,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "react-toastify";
 
-export default function CreatePoll() {
-    const [formData, setFormData] = useState({
-        name: "",
-        starts_at: "",
-        ends_at: "",
-        options: [
-            { name: "", description: "", image: null, imagePreview: null },
-            { name: "", description: "", image: null, imagePreview: null },
-        ],
-    });
+const initialFormData = {
+    name: "",
+    starts_at: "",
+    ends_at: "",
+    options: [
+        { name: "", description: "", image: null, imagePreview: null },
+        { name: "", description: "", image: null, imagePreview: null },
+    ],
+}
 
-    const { success, errors = []} = usePage().props;
+export default function CreatePoll() {
+    
+    const [formData, setFormData] = useState(initialFormData);
+
+    const { flash, errors } = usePage().props;
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    useEffect(() => {
+        if (flash?.success) {
+            toast.success(flash?.success);
+        }
+    });
     const handleInputChange = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
@@ -100,8 +108,10 @@ export default function CreatePoll() {
 
         router.post(route("polls.store"), submitData, {
             forceFormData: true,
-            onFinish: () => setIsSubmitting(false),
-            onSuccess: () => toast.success("berhasil menambah voting")
+            onFinish: () => {
+                setIsSubmitting(false); 
+                setFormData(initialFormData)
+            },
         });
     };
 
