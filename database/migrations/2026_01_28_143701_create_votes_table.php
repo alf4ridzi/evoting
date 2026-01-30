@@ -19,8 +19,9 @@ return new class extends Migration {
             $table
                 ->foreignIdFor(PollOptions::class, "poll_option_id")
                 ->constrained();
-
-            $table->timestamp("voted_at");
+            
+            $table->string("ip_address");
+            $table->timestamp("voted_at")->useCurrent();
             $table->timestamps();
         });
     }

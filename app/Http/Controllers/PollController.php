@@ -103,7 +103,7 @@ class PollController extends Controller
         ->first();
 
         if (!$poll) {
-            return back()->with('error', "poll tidak ditemukan");
+            return to_route('index')->with('error', "poll tidak ditemukan");
         }
 
         $options = $poll->options;

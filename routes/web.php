@@ -14,7 +14,7 @@ Route::get("/", function () {
         "laravelVersion" => Application::VERSION,
         "phpVersion" => PHP_VERSION,
     ]);
-});
+})->name("index");
 
 // Route::get("/dashboard", function () {
 //     return Inertia::render("Dashboard");
@@ -35,7 +35,7 @@ Route::middleware("auth")->group(function () {
 });
 
 Route::prefix("/polls")->group(function () {
-    Route::get("/", [PollController::class, "index"]);
+    // Route::get("/", [PollController::class, "index"]);
     Route::post("/", [PollController::class, "store"])->name("polls.store");
     Route::get("/create", [PollController::class, "create"])->middleware(
         "auth",
