@@ -97,7 +97,7 @@ export default function PollsDashboard() {
     };
 
     const copyPollLink = (pollId) => {
-        const link = `${window.location.origin}/v/${pollId}`;
+        const link = `${window.location.origin}/polls/${pollId}`;
         navigator.clipboard.writeText(link).then(() => {
             setCopiedId(pollId);
             setTimeout(() => setCopiedId(null), 2000);
@@ -212,22 +212,13 @@ export default function PollsDashboard() {
                                         </CardHeader>
 
                                         <CardContent>
-                                            <div className="grid grid-cols-3 gap-4 mb-4">
+                                            <div className="grid grid-cols-2 gap-4 mb-4">
                                                 <div className="text-center p-3 bg-blue-50 rounded-lg">
                                                     <div className="text-2xl font-bold text-blue-600">
                                                         {poll.total_votes || 0}
                                                     </div>
                                                     <div className="text-xs text-gray-600">
                                                         Suara
-                                                    </div>
-                                                </div>
-                                                <div className="text-center p-3 bg-purple-50 rounded-lg">
-                                                    <div className="text-2xl font-bold text-purple-600">
-                                                        {poll.options_count ||
-                                                            0}
-                                                    </div>
-                                                    <div className="text-xs text-gray-600">
-                                                        Pilihan
                                                     </div>
                                                 </div>
                                                 <div className="text-center p-3 bg-green-50 rounded-lg">
@@ -247,7 +238,7 @@ export default function PollsDashboard() {
                                                     className="text-gray-400"
                                                 />
                                                 <code className="flex-1 text-xs truncate">
-                                                    {window.location.origin}/v/
+                                                    {window.location.origin}/polls/
                                                     {poll.poll_id}
                                                 </code>
                                                 <Button
@@ -268,7 +259,7 @@ export default function PollsDashboard() {
 
                                         <CardFooter className="flex gap-2">
                                             <Link
-                                                href={`/v/${poll.poll_id}`}
+                                                href={`/polls/${poll.poll_id}`}
                                                 className="flex-1"
                                             >
                                                 <Button

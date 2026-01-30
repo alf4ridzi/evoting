@@ -146,7 +146,14 @@ class PollController extends Controller
      */
     public function dashboard()
     {
-        return Inertia::render("Polls/Dashboard");
+        $polls = Poll::where("created_by", Auth::id())
+        ->with("options")->get();
+
+        $data = [
+            "polls" => $polls
+        ];
+
+        return Inertia::render("Polls/Dashboard", $data);
     }
 
     /**

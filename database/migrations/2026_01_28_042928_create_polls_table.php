@@ -16,14 +16,16 @@ return new class extends Migration {
 
             $table->foreignIdFor(User::class, "created_by")->constrained();
 
-            $table->string("poll_id")->unique()->index(); // for domain.com/v/pool_id -> rand char
-
+            $table->string("poll_id")->unique()->index(); // for domain.com/polls/pool_id -> rand char
+            
             $table->string("name");
             $table
                 ->enum("status", ["active", "closed"])
                 ->default("active")
                 ->index();
-
+            
+            $table->bigInteger("total_votes")->default(0);
+            
             $table->timestamp("starts_at")->index();
             $table->timestamp("ends_at")->index();
 
