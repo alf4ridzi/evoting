@@ -15,4 +15,8 @@ class Poll extends Model
         "starts_at",
         "ends_at"
     ];
+
+    public function options() {
+        return $this->hasMany(PollOptions::class);
+    }
 }

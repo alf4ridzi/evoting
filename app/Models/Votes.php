@@ -12,4 +12,12 @@ class Votes extends Model
         "poll_option_id",
         "voted_at"
     ];
+
+    public function poll() {
+        return $this->belongsTo(Poll::class);
+    }
+
+    public function option() {
+        return $this->belongsTo(PollOptions::class);
+    }
 }

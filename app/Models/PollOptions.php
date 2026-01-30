@@ -13,4 +13,9 @@ class PollOptions extends Model
         "description",
         "image"
     ];
+
+    public function poll() {
+        return $this->belongsTo(Poll::class);
+    }
+
 }
