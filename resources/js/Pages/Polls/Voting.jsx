@@ -28,9 +28,11 @@ export default function PollVoting() {
     const {
         poll = [],
         options = [],
-        userVote = [],
+        userVote = null,
         results = [],
     } = usePage().props;
+
+    console.log(poll, options);
 
     const hasVoted = userVote !== null;
     const isPollActive = poll.status === "active";
@@ -194,7 +196,7 @@ export default function PollVoting() {
                                         <div className="flex items-start gap-4">
                                             <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
                                                 <img
-                                                    src={option.image}
+                                                    src={`/images/${option.image}`}
                                                     alt={option.name}
                                                     className="w-full h-full object-cover"
                                                 />

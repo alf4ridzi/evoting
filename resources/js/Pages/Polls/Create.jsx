@@ -37,15 +37,19 @@ export default function CreatePoll() {
     
     const [formData, setFormData] = useState(initialFormData);
 
-    const { flash, errors } = usePage().props;
-
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { flash, errors } = usePage().props;
 
     useEffect(() => {
         if (flash?.success) {
             toast.success(flash?.success);
         }
-    });
+
+        if (flash?.error) {
+            toast.error(flash?.error);
+        }
+    }, [flash]);
+
     const handleInputChange = (field, value) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };

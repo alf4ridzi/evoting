@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Votes;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use function Termwind\render;
 
 class VotesController extends Controller
 {
@@ -14,7 +15,6 @@ class VotesController extends Controller
     public function index()
     {
         //
-        return Inertia::render("Polls/Voting");
     }
 
     /**

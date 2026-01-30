@@ -40,12 +40,12 @@ Route::prefix("/polls")->group(function () {
     Route::get("/create", [PollController::class, "create"])->middleware(
         "auth",
     );
+    Route::get("/{id}", [PollController::class, "show"])->name("polls.show");
 });
 
-Route::prefix("/voting")->group(function () {
-    Route::get("/{voting}", [VotesController::class, "index"]);
-    Route::get("/{voting}/result", [PollController::class, "result"]);
-});
+// Route::prefix("/votes")->group(function () {
+//     Route::get("/{id}/result", [PollController::class, "result"]);
+// });
 
 Route::middleware("auth")
     ->prefix("/dashboard")

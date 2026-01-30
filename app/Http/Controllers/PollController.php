@@ -83,7 +83,7 @@ class PollController extends Controller
 
         } catch (Exception $e) {
             DB::rollBack();
-            // dd(vars: $e->getMessage());
+            //dd(vars: $e->getMessage());
             return back()->with("error", "internal server error");
         }
         
@@ -94,9 +94,27 @@ class PollController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Poll $poll)
+    public function show(Poll $poll, string $id)
     {
         //
+
+        $poll = $poll->with("options")
+        ->where("poll_id", $id)
+        ->first();
+
+        if (!$poll) {
+            return back()->with('error', "poll tidak ditemukan");
+        }
+
+        $options = $poll->options;
+
+        $data = [
+            'poll' => $poll,
+            'options' => $options,
+            'userVote' => null,
+        ];
+
+        return Inertia::render("Polls/Voting", $data);
     }
 
     /**
