@@ -10,7 +10,8 @@ class Vote extends Model
     protected $fillable = [
         "poll_id",
         "poll_option_id",
-        "voted_at"
+        "voted_at",
+        "ip_address"
     ];
 
     public function poll() {

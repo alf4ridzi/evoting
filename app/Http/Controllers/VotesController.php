@@ -35,7 +35,7 @@ class VotesController extends Controller
     {
         //
         $request->validate([
-            "poll_option_id" => ["required", "integer", "exist:poll_options,id"]
+            "poll_option_id" => ["required", "integer", "exists:poll_options,id"]
         ]);
         
         $poll = Poll::where("poll_id", $pollID)->firstOrFail();
@@ -57,7 +57,7 @@ class VotesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Votes $votes)
+    public function show(Vote $votes)
     {
         //
     }
@@ -65,7 +65,7 @@ class VotesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Votes $votes)
+    public function edit(Vote $votes)
     {
         //
     }
@@ -73,7 +73,7 @@ class VotesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Votes $votes)
+    public function update(Request $request, Vote $votes)
     {
         //
     }
@@ -81,7 +81,7 @@ class VotesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Votes $votes)
+    public function destroy(Vote $votes)
     {
         //
     }
