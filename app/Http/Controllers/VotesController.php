@@ -6,9 +6,11 @@ use App\Models\Poll;
 use App\Models\PollOptions;
 use App\Models\Vote;
 use App\Models\Votes;
+use Exception;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use function Termwind\render;
+use Illuminate\Support\Facades\DB;
 
 class VotesController extends Controller
 {
@@ -35,21 +37,36 @@ class VotesController extends Controller
     {
         //
         $request->validate([
-            "poll_option_id" => ["required", "integer", "exists:poll_options,id"]
+            "poll_option_id" => [
+                "required",
+                "integer",
+                "exists:poll_options,id",
+            ],
         ]);
-        
-        $poll = Poll::where("poll_id", $pollID)->firstOrFail();
 
-        $option = $poll->options()->findOrFail($request->poll_option_id);
+        DB::beginTransaction();
 
-        $vote = [
-            "poll_id" => $poll->id,
-            "poll_option_id" => $option->id,
-            "ip_address" => $request->ip() 
-        ];
+        try {
+            $poll = Poll::where("poll_id", $pollID)->firstOrFail();
 
-        Vote::create($vote);
-        
+            $option = $poll->options()->findOrFail($request->poll_option_id);
+
+            $vote = [
+                "poll_id" => $poll->id,
+                "poll_option_id" => $option->id,
+                "ip_address" => $request->ip(),
+            ];
+
+            Vote::create($vote);
+
+            $poll->increment("total_votes");
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->with("error", "internal server error : ");
+        }
+
         return back()->with("success", "berhasil vote");
     }
 
