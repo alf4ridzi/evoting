@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Poll;
+use App\Models\PollOptions;
+use App\Models\Vote;
 use App\Models\Votes;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -28,9 +31,27 @@ class VotesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, string $pollID)
     {
         //
+        $request->validate([
+            "poll_option_id" => ["required", "integer", "exist:poll_options,id"]
+        ]);
+        
+        $poll = Poll::where("poll_id", $pollID)->firstOrFail();
+
+
+        $option = $poll->options()->findOrFail($request->poll_option_id);
+
+        $vote = [
+            "poll_id" => $poll->id,
+            "poll_option_id" => $option->id,
+            "ip_address" => $request->ip() 
+        ];
+
+        Vote::create($vote);
+        
+        return back()->with("success", "berhasil vote");
     }
 
     /**
