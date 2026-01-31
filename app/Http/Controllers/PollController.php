@@ -9,8 +9,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
-use Str;
 
 class PollController extends Controller
 {
@@ -45,7 +45,12 @@ class PollController extends Controller
             "options" => ["required", "array"],
             "options.*.name" => ["required", "string"],
             "options.*.description" => ["required", "string"],
-            "options.*.image" => ["required", "image", "mimes:jpg,png,jpeg,svg", "max:4092"]
+            "options.*.image" => [
+                "required",
+                "image",
+                "mimes:jpg,png,jpeg,svg",
+                "max:4092",
+            ],
         ]);
 
         $pollID = Str::random(8);
@@ -81,13 +86,11 @@ class PollController extends Controller
             }
 
             DB::commit();
-
         } catch (Exception $e) {
             DB::rollBack();
             //dd(vars: $e->getMessage());
             return back()->with("error", "internal server error");
         }
-        
 
         return back()->with("success", "berhasil menambah voting");
     }
@@ -99,21 +102,18 @@ class PollController extends Controller
     {
         //
 
-        $poll = $poll->with("options")
-        ->where("poll_id", $id)
-        ->first();
+        $poll = $poll->with("options")->where("poll_id", $id)->first();
 
         if (!$poll) {
-            return to_route('index')->with('error', "poll tidak ditemukan");
+            return to_route("index")->with("error", "poll tidak ditemukan");
         }
 
-        $vote = $poll->votes()
-        ->where("ip_address", request()->ip());
+        $vote = $poll->votes()->where("ip_address", request()->ip());
 
         $data = [
-            'poll' => $poll,
-            'options' => $poll->options,
-            'userVote' => $vote->exists() ?? false,
+            "poll" => $poll,
+            "options" => $poll->options,
+            "userVote" => $vote->exists() ?? false,
         ];
 
         return Inertia::render("Polls/Voting", $data);
@@ -148,11 +148,10 @@ class PollController extends Controller
      */
     public function dashboard()
     {
-        $polls = Poll::where("created_by", Auth::id())
-        ->with("options")->get();
+        $polls = Poll::where("created_by", Auth::id())->with("options")->get();
 
         $data = [
-            "polls" => $polls
+            "polls" => $polls,
         ];
 
         return Inertia::render("Polls/Dashboard", $data);
