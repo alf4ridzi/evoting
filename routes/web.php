@@ -41,7 +41,7 @@ Route::prefix("/polls")->group(function () {
         "auth",
     );
     Route::get("/{id}", [PollController::class, "show"])->name("polls.show");
-    Route::post("/{poll_id}/vote", [VotesController::class, "store"])->name("vote.storee");
+    Route::post("/{poll_id}/vote", [VotesController::class, "store"])->name("vote.store");
 });
 
 // Route::prefix("/votes")->group(function () {
