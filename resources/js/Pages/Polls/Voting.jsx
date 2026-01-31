@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Head, router, usePage } from "@inertiajs/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { toast } from "react-toastify";
 
 export default function PollVoting() {
     const [selectedOption, setSelectedOption] = useState(null);
@@ -30,9 +31,18 @@ export default function PollVoting() {
         options = [],
         userVote = null,
         results = [],
+        flash
     } = usePage().props;
 
-    console.log(poll, options);
+    useEffect(() => {
+        if (flash?.success) {
+            toast.success(flash?.success);
+        }
+
+        if (flash?.error) {
+            toast.error(flash?.error)
+        }
+    }, [flash]);
 
     const hasVoted = userVote !== null;
     const isPollActive = poll.status === "active";
@@ -46,7 +56,7 @@ export default function PollVoting() {
 
         setIsSubmitting(true);
         router.post(
-            `/polls/${poll.poll_id}/vote`,
+            route("vote.store", poll.poll_id),
             {
                 poll_option_id: selectedOption,
             },

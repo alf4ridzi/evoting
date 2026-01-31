@@ -106,11 +106,9 @@ class PollController extends Controller
             return to_route('index')->with('error', "poll tidak ditemukan");
         }
 
-        $options = $poll->options;
-
         $data = [
             'poll' => $poll,
-            'options' => $options,
+            'options' => $poll->options,
             'userVote' => null,
         ];
 
