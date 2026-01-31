@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Poll;
 use App\Models\PollOptions;
+use App\Models\Vote;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -106,10 +107,13 @@ class PollController extends Controller
             return to_route('index')->with('error', "poll tidak ditemukan");
         }
 
+        $vote = $poll->votes()
+        ->where("ip_address", request()->ip());
+
         $data = [
             'poll' => $poll,
             'options' => $poll->options,
-            'userVote' => null,
+            'userVote' => $vote->exists() ?? false,
         ];
 
         return Inertia::render("Polls/Voting", $data);

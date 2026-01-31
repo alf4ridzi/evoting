@@ -29,7 +29,7 @@ export default function PollVoting() {
     const {
         poll = [],
         options = [],
-        userVote = null,
+        userVote = false,
         results = [],
         flash
     } = usePage().props;
@@ -44,7 +44,7 @@ export default function PollVoting() {
         }
     }, [flash]);
 
-    const hasVoted = userVote !== null;
+    const hasVoted = userVote;
     const isPollActive = poll.status === "active";
     const hasStarted = new Date(poll.starts_at) <= new Date();
     const hasEnded = new Date(poll.ends_at) <= new Date();
@@ -251,7 +251,7 @@ export default function PollVoting() {
                                                         )}
                                                 </div>
 
-                                                {(hasVoted || hasEnded) && (
+                                                {(hasVoted && hasEnded) && (
                                                     <div className="mt-4">
                                                         <div className="flex items-center justify-between mb-2">
                                                             <span className="text-sm font-medium text-gray-700">
@@ -305,7 +305,7 @@ export default function PollVoting() {
                         </div>
                     )}
 
-                    {(hasVoted || hasEnded) && (
+                    {(hasVoted && hasEnded) && (
                         <Card className="mt-6 bg-gradient-to-r from-blue-50 to-purple-50">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">

@@ -40,7 +40,6 @@ class VotesController extends Controller
         
         $poll = Poll::where("poll_id", $pollID)->firstOrFail();
 
-
         $option = $poll->options()->findOrFail($request->poll_option_id);
 
         $vote = [
