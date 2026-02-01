@@ -41,9 +41,9 @@ Route::prefix("/polls")->group(function () {
         ->middleware("auth")
         ->name("polls.create");
     Route::get("/{id}", [PollController::class, "show"])->name("polls.show");
-    Route::post("/{poll_id}/vote", [VotesController::class, "store"])->name(
-        "vote.store",
-    );
+    Route::post("/{poll_id}/vote", [VotesController::class, "store"])
+        ->name("vote.store")
+        ->middleware("auth");
 });
 
 // Route::prefix("/votes")->group(function () {

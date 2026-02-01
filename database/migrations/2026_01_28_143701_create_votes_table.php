@@ -2,6 +2,7 @@
 
 use App\Models\Poll;
 use App\Models\PollOptions;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,13 +15,12 @@ return new class extends Migration {
     {
         Schema::create("votes", function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(User::class, "user_id")->constrained();
             $table->foreignIdFor(Poll::class, "poll_id")->constrained();
-
             $table
                 ->foreignIdFor(PollOptions::class, "poll_option_id")
                 ->constrained();
-            
-            $table->string("ip_address");
+
             $table->timestamp("voted_at")->useCurrent();
             $table->timestamps();
         });

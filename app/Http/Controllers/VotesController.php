@@ -8,6 +8,7 @@ use App\Models\Vote;
 use App\Models\Votes;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use function Termwind\render;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +55,7 @@ class VotesController extends Controller
             $vote = [
                 "poll_id" => $poll->id,
                 "poll_option_id" => $option->id,
-                "ip_address" => $request->ip(),
+                "user_id" => Auth::id(),
             ];
 
             Vote::create($vote);
