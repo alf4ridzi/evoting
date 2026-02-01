@@ -108,12 +108,13 @@ class PollController extends Controller
             return to_route("index")->with("error", "poll tidak ditemukan");
         }
 
-        $vote = $poll->votes()->where("ip_address", request()->ip());
+        $vote = $poll->votes()->where("user_id", Auth::id());
 
         $data = [
             "poll" => $poll,
             "options" => $poll->options,
             "userVote" => $vote->exists() ?? false,
+            "enable" => Auth::id() !== null,
         ];
 
         return Inertia::render("Polls/Voting", $data);

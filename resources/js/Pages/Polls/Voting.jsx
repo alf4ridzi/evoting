@@ -7,6 +7,7 @@ import {
     faCalendarAlt,
     faChartBar,
     faVoteYea,
+    faTriangleExclamation,
 } from "@fortawesome/free-solid-svg-icons";
 import {
     Card,
@@ -30,8 +31,9 @@ export default function PollVoting() {
         poll = [],
         options = [],
         userVote = false,
+        enable = false,
         results = [],
-        flash
+        flash,
     } = usePage().props;
 
     useEffect(() => {
@@ -40,10 +42,11 @@ export default function PollVoting() {
         }
 
         if (flash?.error) {
-            toast.error(flash?.error)
+            toast.error(flash?.error);
         }
     }, [flash]);
 
+    const enableVote = enable;
     const hasVoted = userVote;
     const isPollActive = poll.status === "active";
     const hasStarted = new Date(poll.starts_at) <= new Date();
@@ -127,6 +130,18 @@ export default function PollVoting() {
                             </Badge>
                         </div>
                     </div>
+
+                    {!enableVote && (
+                        <Alert className="mb-6 bg-red-50 border-red-200">
+                            <FontAwesomeIcon
+                                icon={faTriangleExclamation}
+                                className="text-red-600 mr-2"
+                            />
+                            <AlertDescription className="text-red-800">
+                                Silahkan login terlebih dahulu untuk voting
+                            </AlertDescription>
+                        </Alert>
+                    )}
 
                     {hasVoted && (
                         <Alert className="mb-6 bg-green-50 border-green-200">
@@ -251,7 +266,7 @@ export default function PollVoting() {
                                                         )}
                                                 </div>
 
-                                                {(hasVoted && hasEnded) && (
+                                                {hasVoted && hasEnded && (
                                                     <div className="mt-4">
                                                         <div className="flex items-center justify-between mb-2">
                                                             <span className="text-sm font-medium text-gray-700">
@@ -286,26 +301,30 @@ export default function PollVoting() {
                         })}
                     </div>
 
-                    {!hasVoted && isPollActive && hasStarted && !hasEnded && (
-                        <div className="flex justify-center">
-                            <Button
-                                size="lg"
-                                disabled={!selectedOption || isSubmitting}
-                                onClick={handleVote}
-                                className="px-8 py-6 text-lg"
-                            >
-                                <FontAwesomeIcon
-                                    icon={faVoteYea}
-                                    className="mr-2"
-                                />
-                                {isSubmitting
-                                    ? "Mengirim Suara..."
-                                    : "Kirim Suara"}
-                            </Button>
-                        </div>
-                    )}
+                    {!hasVoted &&
+                        isPollActive &&
+                        hasStarted &&
+                        !hasEnded &&
+                        enableVote(
+                            <div className="flex justify-center">
+                                <Button
+                                    size="lg"
+                                    disabled={!selectedOption || isSubmitting}
+                                    onClick={handleVote}
+                                    className="px-8 py-6 text-lg"
+                                >
+                                    <FontAwesomeIcon
+                                        icon={faVoteYea}
+                                        className="mr-2"
+                                    />
+                                    {isSubmitting
+                                        ? "Mengirim Suara..."
+                                        : "Kirim Suara"}
+                                </Button>
+                            </div>,
+                        )}
 
-                    {(hasVoted && hasEnded) && (
+                    {hasVoted && hasEnded && (
                         <Card className="mt-6 bg-gradient-to-r from-blue-50 to-purple-50">
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2">
