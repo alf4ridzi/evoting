@@ -12,6 +12,7 @@ import {
     faCheckCircle,
     faTimesCircle,
     faCopy,
+    faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 import {
     Card,
@@ -49,6 +50,10 @@ export default function PollsDashboard() {
         if (now > endsAt) return "ended";
         if (poll.status === "closed") return "closed";
         return "active";
+    };
+
+    const handleLogout = () => {
+        router.post(route("logout"));
     };
 
     const getStatusBadge = (poll) => {
@@ -119,15 +124,29 @@ export default function PollsDashboard() {
                                 Kelola semua voting yang Anda buat
                             </p>
                         </div>
-                        <Link href="/polls/create">
-                            <Button size="lg">
+
+                        <div className="flex items-center gap-3">
+                            <Link href={route("polls.create")}>
+                                <Button size="lg">
+                                    <FontAwesomeIcon
+                                        icon={faPlus}
+                                        className="mr-2"
+                                    />
+                                    Buat Voting Baru
+                                </Button>
+                            </Link>
+
+                            <Button
+                                size="lg"
+                                onClick={handleLogout}
+                                variant="destructive"
+                            >
                                 <FontAwesomeIcon
-                                    icon={faPlus}
-                                    className="mr-2"
-                                />
-                                Buat Voting Baru
+                                    icon={faArrowRightFromBracket}
+                                ></FontAwesomeIcon>
+                                Logout
                             </Button>
-                        </Link>
+                        </div>
                     </div>
 
                     {copiedId && (
@@ -155,7 +174,7 @@ export default function PollsDashboard() {
                                 <p className="text-gray-500 mb-6">
                                     Buat voting pertama Anda untuk memulai
                                 </p>
-                                <Link href="/polls/create">
+                                <Link href={route("polls.create")}>
                                     <Button>
                                         <FontAwesomeIcon
                                             icon={faPlus}
@@ -238,7 +257,8 @@ export default function PollsDashboard() {
                                                     className="text-gray-400"
                                                 />
                                                 <code className="flex-1 text-xs truncate">
-                                                    {window.location.origin}/polls/
+                                                    {window.location.origin}
+                                                    /polls/
                                                     {poll.poll_id}
                                                 </code>
                                                 <Button

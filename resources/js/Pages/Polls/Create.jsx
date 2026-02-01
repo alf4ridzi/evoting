@@ -31,10 +31,9 @@ const initialFormData = {
         { name: "", description: "", image: null, imagePreview: null },
         { name: "", description: "", image: null, imagePreview: null },
     ],
-}
+};
 
 export default function CreatePoll() {
-    
     const [formData, setFormData] = useState(initialFormData);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -113,8 +112,8 @@ export default function CreatePoll() {
         router.post(route("polls.store"), submitData, {
             forceFormData: true,
             onFinish: () => {
-                setIsSubmitting(false); 
-                setFormData(initialFormData)
+                setIsSubmitting(false);
+                setFormData(initialFormData);
             },
         });
     };
@@ -128,7 +127,7 @@ export default function CreatePoll() {
                     <div className="mb-8">
                         <Button
                             variant="ghost"
-                            onClick={() => router.visit("/polls")}
+                            onClick={() => router.visit(route("dashboard"))}
                             className="mb-4"
                         >
                             <FontAwesomeIcon
