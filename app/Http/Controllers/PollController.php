@@ -109,12 +109,14 @@ class PollController extends Controller
         }
 
         $vote = $poll->votes()->where("user_id", Auth::id());
+        $results = $poll->votes()->where("poll_id", $poll->id)->get();
 
         $data = [
             "poll" => $poll,
             "options" => $poll->options,
-            "userVote" => $vote->exists() ?? false,
+            "userVote" => $vote->first(),
             "enable" => Auth::id() !== null,
+            "results" => $results,
         ];
 
         return Inertia::render("Polls/Voting", $data);

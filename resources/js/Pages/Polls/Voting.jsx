@@ -52,7 +52,7 @@ export default function PollVoting() {
     const hasStarted = new Date(poll.starts_at) <= new Date();
     const hasEnded = new Date(poll.ends_at) <= new Date();
 
-    const totalVotes = results?.total_votes || 0;
+    const totalVotes = results?.length || poll.total_votes || 0;
 
     const handleVote = () => {
         if (!selectedOption || !isPollActive || !hasStarted || hasEnded) return;
@@ -184,7 +184,10 @@ export default function PollVoting() {
                     <div className="grid gap-4 mb-6">
                         {options.map((option) => {
                             const optionVotes =
-                                results?.votes_per_option?.[option.id] || 0;
+                                results?.filter(
+                                    (r) => r.poll_option_id === option.id,
+                                ).length || 0;
+
                             const percentage = getPercentage(optionVotes);
                             const isSelected = selectedOption === option.id;
                             const isUserVote =
@@ -304,8 +307,8 @@ export default function PollVoting() {
                     {!hasVoted &&
                         isPollActive &&
                         hasStarted &&
-                        !hasEnded &&
-                        enableVote(
+                        enableVote &&
+                        !hasEnded && (
                             <div className="flex justify-center">
                                 <Button
                                     size="lg"
@@ -321,7 +324,7 @@ export default function PollVoting() {
                                         ? "Mengirim Suara..."
                                         : "Kirim Suara"}
                                 </Button>
-                            </div>,
+                            </div>
                         )}
 
                     {hasVoted && hasEnded && (
