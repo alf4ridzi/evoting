@@ -1,0 +1,78 @@
+import React, { useState } from "react";
+import { router, usePage } from "@inertiajs/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+export default function SearchIndex() {
+    const { flash } = usePage().props;
+
+    const [pollingId, setPollingId] = useState("");
+    const [error, setError] = useState(null);
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+
+        if (!pollingId.trim()) {
+            setError("Polling ID wajib diisi");
+            return;
+        }
+
+        setError(null);
+
+        router.get(
+            route("polls.show", pollingId),
+            {},
+            {
+                onError: () => {
+                    setError("Polling tidak ditemukan");
+                },
+            },
+        );
+    };
+
+    return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+            <h1 className="mb-8 text-6xl font-bold text-gray-800">Polling</h1>
+
+            <form onSubmit={handleSearch} className="w-full max-w-2xl px-4">
+                <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                        <div className="relative flex-1">
+                            <Input
+                                type="text"
+                                placeholder="Masukkan Polling ID"
+                                value={pollingId}
+                                onChange={(e) => {
+                                    setPollingId(e.target.value);
+                                    setError(null);
+                                }}
+                                className={`pl-4 py-6 text-lg rounded-full ${
+                                    error
+                                        ? "border-red-500 focus:border-red-500"
+                                        : ""
+                                }`}
+                            />
+                        </div>
+
+                        <Button
+                            type="submit"
+                            className="rounded-full px-6 py-6"
+                            disabled={!pollingId.trim()}
+                        >
+                            <FontAwesomeIcon icon={faArrowRight} />
+                        </Button>
+                    </div>
+
+                    {(error || flash?.error) && (
+                        <p className="text-sm text-red-500 ml-4">
+                            {error || flash.error}
+                        </p>
+                    )}
+                </div>
+            </form>
+        </div>
+    );
+}
