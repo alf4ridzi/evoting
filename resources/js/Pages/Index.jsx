@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Link, router, usePage } from "@inertiajs/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+    faArrowRight,
+    faSignInAlt,
+    faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -45,7 +49,7 @@ export default function SearchIndex() {
 
                 <Button asChild variant="outline" className="rounded-full px-6">
                     <Link href={route("register")}>
-                        <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
+                        <FontAwesomeIcon icon={faUserPlus} className="mr-2" />
                         Register
                     </Link>
                 </Button>
