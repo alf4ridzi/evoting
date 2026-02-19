@@ -29,18 +29,24 @@ export default function SearchIndex() {
                 onError: () => {
                     setError("Polling tidak ditemukan");
                 },
-            }
+            },
         );
     };
 
     return (
         <div className="min-h-screen flex flex-col bg-white relative">
-            {/* Button Login */}
-            <div className="absolute top-6 right-6">
+            <div className="absolute top-6 right-6 flex gap-3">
                 <Button asChild variant="outline" className="rounded-full px-6">
                     <Link href={route("login")}>
                         <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
                         Login
+                    </Link>
+                </Button>
+
+                <Button asChild variant="outline" className="rounded-full px-6">
+                    <Link href={route("register")}>
+                        <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
+                        Register
                     </Link>
                 </Button>
             </div>
@@ -50,10 +56,7 @@ export default function SearchIndex() {
                     Polling
                 </h1>
 
-                <form
-                    onSubmit={handleSearch}
-                    className="w-full max-w-2xl px-4"
-                >
+                <form onSubmit={handleSearch} className="w-full max-w-2xl px-4">
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-2">
                             <div className="relative flex-1">
